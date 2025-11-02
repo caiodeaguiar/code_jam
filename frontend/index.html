@@ -1,3 +1,11 @@
 <!DOCTYPE html>
 <div>hello world</div>
 
+<form action="/login" method="post" id="formLogin">
+    <label for="usuario">Usuario: </label>
+    <input type="text" name="usuario" id="usuario"><br>
+    <label for="senha">Senha: </label>
+    <input type="password" name="senha" id="senha">
+</form>
+
+<button type="submit" form="formLogin" value="submit">Submit</button>
