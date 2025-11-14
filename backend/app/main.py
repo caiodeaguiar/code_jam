@@ -25,7 +25,6 @@ fake_users_db = {
     }
 }
 #senha 123456
-
 from fastapi.middleware.cors import CORSMiddleware
 
 
