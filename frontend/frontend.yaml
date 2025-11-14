@@ -17,7 +17,8 @@ spec:
       containers:
         - name: frontend-container
           # !! MUDE AQUI para a sua imagem !!
-          image: seu-usuario/meu-frontend:1.0
+          image: meu-frontend:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80 # A porta que o Nginx usa DENTRO do container
 
