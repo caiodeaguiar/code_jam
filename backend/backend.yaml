@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: backend
+spec:
+  replicas: 1 # Você pode aumentar isso depois
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend-container
+          # !! MUDE AQUI para a sua imagem !!
+          image: seu-usuario/meu-backend:1.0
+          ports:
+            - containerPort: 80 # A porta que seu app FastAPI usa DENTRO do container
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  # O tipo 'LoadBalancer' cria um IP externo (em provedores de nuvem)
+  # Para testes locais (Minikube), use 'NodePort'
+  type: LoadBalancer
+  selector:
+    app: backend # Encontra os Pods com esta label
+  ports:
+    - protocol: TCP
+      port: 8000 # Porta que o serviço expõe (externa)
+      targetPort: 80 # Porta que o container está ouvindo (interna)
