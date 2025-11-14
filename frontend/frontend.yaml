@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend-container
+          # !! MUDE AQUI para a sua imagem !!
+          image: seu-usuario/meu-frontend:1.0
+          ports:
+            - containerPort: 80 # A porta que o Nginx usa DENTRO do container
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: frontend # Encontra os Pods com esta label
+  ports:
+    - protocol: TCP
+      port: 3000 # Porta que o serviço expõe (externa)
+      targetPort: 80 # Porta que o container está ouvindo (interna)
