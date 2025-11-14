@@ -3,7 +3,19 @@ services:
     build: ./backend
     ports:
       - "8000:80"
+    volumes:
+      # 'espelha' o diretório local ./backend para /app dentro do container
+      # Ajuste '/app' se o seu WORKDIR no Dockerfile for outro
+      - ./backend:/app
+  
   frontend:
     build: ./frontend
     ports:
       - "3000:80"
+    volumes:
+      # 'espelha' o diretório local ./frontend para /app no container
+      - ./frontend:/app
+      # Linha importante: Cria um volume anônimo para o node_modules
+      # Isso impede que o seu node_modules local (se existir)
+      # sobrescreva o node_modules de dentro do container.
+      - /app/node_modules
