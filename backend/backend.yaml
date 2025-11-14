@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: backend-container
-          # !! MUDE AQUI para a sua imagem !!
-          image: seu-usuario/meu-backend:1.0
+          image: meu-backend:1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80 # A porta que seu app FastAPI usa DENTRO do container
 
