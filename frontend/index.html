@@ -24,37 +24,34 @@
     const form = document.getElementById('formLogin');
     const resultado = document.getElementById('resultado');
 
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault(); // impede recarregar a página
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
 
-      try {
-        const response = await fetch('http://localhost:8000/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ username, password })
-        });
+  const data = new URLSearchParams();
+  data.append('username', username);
+  data.append('password', password);
 
-        if (!response.ok) {
-          throw new Error(`Erro HTTP: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        // Supondo que o backend retorne { "token": "seu_jwt_aqui" }
-        resultado.innerHTML = `
-          <strong>Login bem-sucedido!</strong><br>
-          Token JWT: <code>${data.token}</code>
-        `;
-
-      } catch (error) {
-        resultado.innerHTML = `<span style="color:red;">Erro: ${error.message}</span>`;
-      }
+  try {
+    const response = await fetch('http://localhost:8000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: data
     });
+
+    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+
+    const json = await response.json();
+    resultado.innerHTML = `Login bem-sucedido!<br>Token JWT: <code>${json.access_token}</code>`;
+  } catch (err) {
+    resultado.innerHTML = `<span style="color:red;">Erro: ${err.message}</span>`;
+  }
+});
+
   </script>
 
 </body>
