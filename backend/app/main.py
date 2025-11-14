@@ -20,10 +20,11 @@ fake_users_db = {
         "username": "johndoe",
         "full_name": "John Doe",
         "email": "johndoe@example.com",
-        "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$vORqjrfpo0Z95GKwuoqdLQ$9OysdHiomsDpiWcOSMx3CRuewDVkD0H7xPedUY++2Ho",
+        "hashed_password": "$argon2id$v=19$m=65536,t=3,p=4$cO6d03oP4TzHWEuJsVaK8Q$e1RbN5x1nieeCs+X8B1LnqCUGSssKiWM2FtqdJJEigA",
         "disabled": False,
     }
 }
+#senha 123456
 
 from fastapi.middleware.cors import CORSMiddleware
 
