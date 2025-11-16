@@ -1,1 +1,58 @@
-.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fullstack-deployment # Um único deployment
+  labels:
+    app: fullstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fullstack # O seletor aponta para o Pod
+  template:
+    metadata:
+      labels:
+        app: fullstack # O Pod tem esta label
+    spec:
+      containers: # Lista com os DOIS containers
+      - name: backend-container
+        image: meu-backend:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8000 # Porta INTERNA do backend
+            name: http-backend
+            
+      - name: frontend-container
+        image: meu-frontend:1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 80 # Porta INTERNA do frontend
+            name: http-frontend
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: fullstack # Encontra o Pod pela label 'fullstack'
+  ports:
+    - protocol: TCP
+      port: 8000 # Porta EXTERNA do serviço
+      targetPort: http-backend # Redireciona para a porta 'http-backend' (8000) do Pod
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: fullstack # Encontra o MESMO Pod pela label 'fullstack'
+  ports:
+    - protocol: TCP
+      port: 3000 # Porta EXTERNA do serviço
+      targetPort: http-frontend # Redireciona para a porta 'http-frontend' (80) do Pod
