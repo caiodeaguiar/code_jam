@@ -1,3 +1,9 @@
 fastapi[standard]
 pyjwt
 pwdlib[argon2]
+uvicorn[standard]
+pwdlib
+PyJWT
+python-multipart
+pytest
+httpx
