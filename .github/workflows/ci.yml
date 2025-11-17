@@ -42,4 +42,5 @@ jobs:
       # 4. Executa os testes com pytest
       - name: Run tests
         run: |
+          export PYTHONPATH=$PYTHONPATH:.
           pytest
