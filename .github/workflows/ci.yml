@@ -1,0 +1,45 @@
+# Nome do seu workflow
+name: Testes Python CI
+
+# Gatilhos: quando este workflow deve rodar
+on:
+  # Rodar em pushes para a branch 'main'
+  push:
+    branches: [ "main" ]
+  # Rodar em Pull Requests que miram a branch 'main'
+  pull_request:
+    branches: [ "main" ]
+
+# Tarefas (jobs) que o workflow vai executar
+jobs:
+  # Nome da tarefa (pode ser qualquer nome)
+  build-and-test:
+    # Sistema operacional onde os testes vão rodar
+    runs-on: ubuntu-latest
+
+    # Estratégia para rodar em múltiplas versões do Python
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    # Passos da tarefa
+    steps:
+      # 1. Baixa o código do repositório
+      - uses: actions/checkout@v4
+
+      # 2. Configura a versão do Python (da matriz)
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # 3. Instala as dependências
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      # 4. Executa os testes com pytest
+      - name: Run tests
+        run: |
+          pytest
