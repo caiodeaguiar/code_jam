@@ -7,13 +7,13 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jwt.exceptions import InvalidTokenError
 from pwdlib import PasswordHash
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
 # to get a string like this run:
 # openssl rand -hex 32
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
 
 fake_users_db = {
     "johndoe": {
@@ -24,10 +24,7 @@ fake_users_db = {
         "disabled": False,
     }
 }
-#senha 123456
-from fastapi.middleware.cors import CORSMiddleware
-
-
+# senha 123456
 
 
 class Token(BaseModel):
@@ -52,7 +49,7 @@ class UserInDB(User):
 
 password_hash = PasswordHash.recommended()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login") # Atualizado para "login" que é a sua rota
 
 app = FastAPI()
 
@@ -62,7 +59,8 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-) 
+)
+
 
 def verify_password(plain_password, hashed_password):
     return password_hash.verify(plain_password, hashed_password)
@@ -126,7 +124,7 @@ async def get_current_active_user(
     return current_user
 
 
-@app.post("/login")
+@app.post("/login", response_model=Token) # Adicionado response_model
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
 ) -> Token:
@@ -156,3 +154,12 @@ async def read_own_items(
     current_user: Annotated[User, Depends(get_current_active_user)],
 ):
     return [{"item_id": "Foo", "owner": current_user.username}]
+
+# --- NOSSA NOVA ROTA PARA TESTAR ---
+@app.get("/mod2/{number}")
+async def calculate_mod2(number: int):
+    """
+    Calcula se um número é par ou ímpar (mod 2).
+    """
+    result = "par" if number % 2 == 0 else "impar"
+    return {"number": number, "result": result}
