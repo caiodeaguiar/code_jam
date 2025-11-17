@@ -161,5 +161,5 @@ async def calculate_mod2(number: int):
     """
     Calcula se um número é par ou ímpar (mod 2).
     """
-    result = "par" if number % 2 == 0 else "impar"
+    result = "par" if number % 3 == 0 else "impar"
     return {"number": number, "result": result}
