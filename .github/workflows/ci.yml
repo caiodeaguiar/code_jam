@@ -20,7 +20,7 @@ jobs:
     # Estratégia para rodar em múltiplas versões do Python
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11"]
+        python-version: ["3.12"]
 
     # Passos da tarefa
     steps:
