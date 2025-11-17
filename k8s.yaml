@@ -19,7 +19,7 @@ spec:
         image: meu-backend:1.0
         imagePullPolicy: IfNotPresent
         ports:
-          - containerPort: 8000 # Porta INTERNA do backend
+          - containerPort: 8080 # Porta INTERNA do backend
             name: http-backend
             
       - name: frontend-container
